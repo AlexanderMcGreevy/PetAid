@@ -1,3 +1,6 @@
+#Values in variables are placeholders
+
+from google import genai
 from dotenv import load_dotenv
 import os
 
@@ -5,9 +8,9 @@ load_dotenv(".env")
 
 client = genai.Client(api_key=f"{os.getenv("GEMINI_API_KEY")}")
 
-from google import genai
 
-client = genai.Client(api_key="GEMINI_API_KEY")
+
+
 #Only dogs have breeds (so far)
 
 species='dog'

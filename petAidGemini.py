@@ -1,3 +1,9 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv(".env")
+
+client = genai.Client(api_key=f"{os.getenv("GEMINI_API_KEY")}")
 
 from google import genai
 
@@ -12,7 +18,6 @@ age=6
 
 pet_information={
     'species':species,
-    
     'weight_kg':5,
     'name' : name,
     'age_years' : age
@@ -21,7 +26,7 @@ pet_information={
 if species=='dog':
     pet_information['breed']=breed
 
-pet_health_question = ''
+pet_health_question = input('Please put your question')
 
 pet_health_question = 'pet health question: ' + pet_health_question
 

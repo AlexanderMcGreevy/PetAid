@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv(".env")
-
+print(os.getenv("GEMINI_API_KEY"))
 client = genai.Client(api_key=f"{os.getenv("GEMINI_API_KEY")}")
 
 
@@ -29,7 +29,7 @@ pet_information={
 if species=='dog':
     pet_information['breed']=breed
 
-pet_health_question = input('Please put your question')
+pet_health_question = input('Please put your question: ')
 
 pet_health_question = 'pet health question: ' + pet_health_question
 
@@ -38,7 +38,7 @@ pet_information_list=[]
 for key in pet_information:
     pet_information_list+= [key + ' = ' + str(pet_information[key]) + ' ']
 
-response_info = "Phrase it in this template, don't say anything along the lines of (okay, here's the analysis) : Possible issue: Issue, description\nLikelyhood: likelyhood percent\nSeverity: severity\nExplanation: Description of problem, possible causes\nRecommendation: Seek a vet or no?"
+response_info = "Phrase it in this template, don't say anything along the lines of (okay, here's the analysis) : Possible issue: Issue, description\nLikelyhood: likelyhood percent\nSeverity: severity\nExplanation: Description of problem, possible causes\nRecommendation: Seek a vet or don't seek a vet?"
 
 
 response = client.models.generate_content(

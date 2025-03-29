@@ -1,3 +1,4 @@
+#Values in variables are placeholders
 
 from google import genai
 from google.genai import types
@@ -5,19 +6,16 @@ from dotenv import load_dotenv
 import os
 import requests
 
-
 load_dotenv(".env")
 
 def gemini_call():
     client = genai.Client(api_key=f"{os.getenv("GEMINI_API_KEY")}")
     #Only dogs have breeds (so far)
-
     species='dog'
     breed='poodle'
     weight='normal'
     name='fido'
     age=6
-
     pet_information={
         'species':species,
         

@@ -1,7 +1,7 @@
 
 from google import genai
 
-client = genai.Client(api_key="AIzaSyA10HbWXNvt0BXydlTFlSvi_nhPvyy8VdI")
+client = genai.Client(api_key="GEMINI_API_KEY")
 #Only dogs have breeds (so far)
 
 species='dog'

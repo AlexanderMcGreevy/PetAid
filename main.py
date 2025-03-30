@@ -6,6 +6,17 @@ import json
 
 app = Flask(__name__)
 
+def format_clinic_keys(clinic):
+    return {
+        "name": clinic.get("name", ""),
+        "rating": clinic.get("rating", 0),
+        "reviewCount": clinic.get("review_count", 0),
+        "distance": clinic.get("distance", 0),
+        "phone": clinic.get("phone", ""),
+        "address": clinic.get("address", ""),
+        "googleLink": clinic.get("google_link", "")
+    }
+
 @app.route('/get-data', methods=['POST'])
 def get_data():
     data = request.get_json()
@@ -48,21 +59,21 @@ def google_places():
     if not location:
         location = "New York, NY"  # fallback for testing
 
-    # Use the smart version
     clinics_df = find_pet_clinics(location, radius)
+    clinics_raw = clinics_df.to_dict(orient='records')
 
-    # Convert dataframe to list of dictionaries
-    clinics = clinics_df.to_dict(orient='records')
+    # 👇 Apply the key formatter
+    clinics = [format_clinic_keys(c) for c in clinics_raw]
 
-    # Optional: Save to JSON file
     try:
         with open('./google_places_response.json', 'w') as f:
             json.dump(clinics, f, indent=2)
     except IOError as e:
         return jsonify({"error": f"Failed to write JSON file: {e}"}), 500
 
-    # ✅ send back the processed data
     return jsonify(clinics)
+
+
 
 @app.route('/find-pet-clinics', methods=['POST'])
 def find_pet_clinics():
@@ -82,5 +93,7 @@ def find_pet_clinics():
         return jsonify({"error": f"Failed to write JSON file: {e}"}), 500
 
     return jsonify(places_data)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

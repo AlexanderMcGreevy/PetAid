@@ -97,6 +97,8 @@ struct ClinicView: View {
             guard let data = data,
                   let decoded = try? JSONDecoder().decode([Clinic].self, from: data) else {
                 print("Failed to decode or fetch clinics")
+                
+                
                 return
             }
             DispatchQueue.main.async {

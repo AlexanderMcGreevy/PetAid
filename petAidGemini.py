@@ -7,24 +7,24 @@ import requests
 
 load_dotenv(".env")
 
-def gemini_call():
-    client = genai.Client(api_key=f"{os.getenv("GEMINI_API_KEY")}")
+def gemini_call(desc='', image=''):
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     #Only dogs have breeds (so far)
-    species='dog'
-    breed='poodle'
-    weight='normal'
-    name='fido'
-    age=6
-    pet_information={
-        'species':species,
+    # species='dog'
+    # breed='poodle'
+    # weight='normal'
+    # name='fido'
+    # age=6
+    # pet_information={
+    #     'species':species,
         
-        'weight_kg':5,
-        'name' : name,
-        'age_years' : age
-    }
+    #     'weight_kg':5,
+    #     'name' : name,
+    #     'age_years' : age
+    # }
 
-    if species=='dog':
-        pet_information['breed']=breed
+    # if species=='dog':
+    #     pet_information['breed']=breed
 
     pet_health_question = input("Type in your question here: ")
 
@@ -36,10 +36,10 @@ def gemini_call():
         image_input = input("Add an image link here: ")
         image_input = requests.get(image_input)
 
-    pet_information_list=[]
+    # pet_information_list=[]
 
-    for key in pet_information:
-        pet_information_list+= [key + ' = ' + str(pet_information[key]) + ' ']
+    # for key in pet_information:
+    #     pet_information_list+= [key + ' = ' + str(pet_information[key]) + ' ']
 
     prompt_starter = """You are a vetarinary affairs assistant gleefully looking to help pet owners in need. They will give you information on their pets' ailments, 
     so you must attempt to identify the issue. Please format your response using the following template (Remove brackets from your responses):\n

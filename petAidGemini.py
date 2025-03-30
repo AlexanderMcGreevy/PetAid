@@ -7,7 +7,7 @@ import requests
 
 load_dotenv(".env")
 
-def gemini_call(desc='', image=''):
+def gemini_call(desc='', image='', extra_info=[]):
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     #Only dogs have breeds (so far)
     # species='dog'
@@ -55,7 +55,15 @@ def gemini_call(desc='', image=''):
     Pet Owner Question:\n
     """
 
-    prompt = [prompt_starter + '\n\n' + desc]
+    prompt = prompt_starter + '\n\n' + desc + '\nAdditional Information:'
+
+    for key in extra_info:
+        if extra_info[key] == '':
+            extra_info[key] = 'N/A'
+        
+        prompt += f"\n{key}: {extra_info[key]}"
+
+    prompt = [prompt]
 
     if image is not None:
         prompt += [image]

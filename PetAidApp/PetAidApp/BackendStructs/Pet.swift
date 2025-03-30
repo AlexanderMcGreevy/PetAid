@@ -9,10 +9,13 @@ import Foundation
 import SwiftUI
 
 struct Pet: Identifiable, Codable {
-    var id: UUID = UUID()
+    var id = UUID()
     var name: String
     var age: String
     var species: String
     var breed: String
-    var imageFilename: String // filename saved in documents directory
+    var imageFilename: String
+
+    var lastVetVisit: String
+    var pastIllnesses: String
 }

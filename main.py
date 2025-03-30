@@ -7,15 +7,28 @@ import json
 app = Flask(__name__)
 
 def format_clinic_keys(clinic):
+    def safe_float(value):
+        try:
+            return float(value)
+        except:
+            return 0.0
+
+    def safe_int(value):
+        try:
+            return int(value)
+        except:
+            return 0
+
     return {
         "name": clinic.get("name", ""),
-        "rating": clinic.get("rating", 0),
-        "reviewCount": clinic.get("review_count", 0),
-        "distance": clinic.get("distance", 0),
+        "rating": safe_float(clinic.get("rating", 0)),
+        "reviewCount": safe_int(clinic.get("review_count", 0)),
+        "distance": safe_float(clinic.get("distance", 0)),
         "phone": clinic.get("phone", ""),
         "address": clinic.get("address", ""),
         "googleLink": clinic.get("google_link", "")
     }
+
 
 @app.route('/get-data', methods=['POST'])
 def get_data():

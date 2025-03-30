@@ -3,8 +3,15 @@ import googlemaps
 import json
 import pandas as pd
 from datetime import datetime
+import requests
 
-#Inititalizing Google Maps client
+def get_places_data(location, radius):
+    api_key = 'AIzaSyAgMO9Nlm8TcaHo5kHx2kRmbt03-8hpfAE'
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius={radius}&key={api_key}"
+    response = requests.get(url)
+    return response.json()
+
+#Inititalizing Google Maps client, added get places data function
 API_Key = 'AIzaSyAgMO9Nlm8TcaHo5kHx2kRmbt03-8hpfAE'
 gmaps = googlemaps.Client (key=API_Key)
 

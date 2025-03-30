@@ -18,5 +18,10 @@ def diagnose():
 
     out_json = json_converter(response)
 
-with open('./response_json', 'w') as f:
-    json.dump(out_json, f) 
+    with open('./response_json', 'w') as f:
+        json.dump(out_json, f) 
+
+    return out_json
+
+# Call diagnose
+diagnose()

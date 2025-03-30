@@ -55,7 +55,24 @@ def gemini_call(desc='', image=''):
     Pet Owner Question:\n
     """
 
-    prompt = [prompt_starter + '\n\n' + desc]
+    prompt = [
+        f"""{prompt_starter}
+
+Pet Information:
+- Name: {data.get('name', 'Unknown')}
+- Age: {data.get('age', 'Unknown')}
+- Species: {data.get('species', 'Unknown')}
+- Breed: {data.get('breed', 'Unknown')}
+- Last Vet Visit: {data.get('lastVetVisit', 'Unknown')}
+- Past Illnesses: {data.get('pastIllnesses', 'Unknown')}
+
+Reported Symptoms:
+{desc}
+"""
+    ]
+
+
+
 
     if image is not None:
         prompt += [image]

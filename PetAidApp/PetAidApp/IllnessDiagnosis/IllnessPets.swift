@@ -1,36 +1,39 @@
+//
+//  IllnessPets.swift
+//  PetAidApp
+//
+//  Created by Alexander McGreevy on 3/29/25.
+//
+
 import SwiftUI
 
-struct PetView: View {
+struct IllnessPets: View {
     @StateObject var viewModel = PetViewModel()
 
     var body: some View {
-        NavigationView {
+        NavigationStack { // use NavigationStack for iOS 16+
             ZStack {
                 Color.teal.ignoresSafeArea()
 
                 ScrollView {
-                    LazyVStack(spacing: 20) {
+                    VStack(spacing: 20) {
                         ForEach(viewModel.pets) { pet in
                             NavigationLink(
-                                destination: PetInfoView(
-                                    viewModel: viewModel,//required
-                                    pet: pet,
-                                    image: viewModel.getImage(for: pet)
-                                )
+                                destination: IllnessView(pet: pet)
                             ) {
-                                LazyVStack {
+                                VStack {
                                     if let image = viewModel.getImage(for: pet) {
                                         Image(uiImage: image)
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: 200, height: 200)
+                                            .frame(width: 150, height: 150)
                                             .cornerRadius(10)
                                             .padding()
                                     } else {
                                         Image("GenericPet")
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: 200, height: 200)
+                                            .frame(width: 150, height: 150)
                                             .padding()
                                     }
                                     Text(pet.name)
@@ -43,20 +46,11 @@ struct PetView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Your Pets")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: AddPet(viewModel: viewModel)) {
-                        Image(systemName: "plus")
-                            .font(.title2)
-                            .foregroundColor(.white)
-                    }
-                }
-            }
+            .navigationTitle("Choose Pet for Diagnosis")
         }
     }
 }
 
 #Preview {
-    PetView()
+    IllnessPets()
 }

@@ -27,7 +27,13 @@ def find_pet_clinics(location, radius=5000):
         DataFrame of clinic information
     """
     # If location is a string address, geocode it first
-    if isinstance(location, str):
+    if isinstance(location, str) and "," in location:
+        # Directly parse lat,lng string
+        lat_str, lng_str = location.split(",")
+        lat = float(lat_str.strip())
+        lng = float(lng_str.strip())
+        location = (lat, lng)
+    elif isinstance(location, str):
         geocode_result = gmaps.geocode(location)
         if not geocode_result:
             raise ValueError(f"Could not geocode address: {location}")
@@ -35,6 +41,7 @@ def find_pet_clinics(location, radius=5000):
         lat = geocode_result[0]['geometry']['location']['lat']
         lng = geocode_result[0]['geometry']['location']['lng']
         location = (lat, lng)
+
     
     # Search for veterinary clinics
     places_result = gmaps.places_nearby(

@@ -8,7 +8,7 @@
 import Foundation
 
 struct Clinic: Identifiable, Decodable {
-    let id = UUID() // or use a unique identifier from your JSON, such as place_id
+    let id = UUID()
     let name: String
     let rating: Double
     let reviewCount: Int
@@ -18,6 +18,12 @@ struct Clinic: Identifiable, Decodable {
     let googleLink: String
     
     enum CodingKeys: String, CodingKey {
-        case name, rating, reviewCount, distance, phone, address, googleLink
+        case name
+        case rating
+        case reviewCount = "review_count"
+        case distance
+        case phone
+        case address
+        case googleLink = "google_link"
     }
 }

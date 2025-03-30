@@ -6,7 +6,7 @@ response = gemini_call()
 print(response)
 out_json = json_converter(response)
 
-with open('./response_json', 'w') as f:
+with open('./response.json', 'w') as f:
     json.dump(out_json, f)
     
 # Installation

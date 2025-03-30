@@ -1,2 +1,5 @@
 .env
 __pycache__
+response.json
+directions.json
+pet_clinics.json

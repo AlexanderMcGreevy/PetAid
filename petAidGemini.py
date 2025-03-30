@@ -26,14 +26,14 @@ def gemini_call():
     if species=='dog':
         pet_information['breed']=breed
 
-    pet_health_question = input("Type in your question here:")
+    pet_health_question = input("Type in your question here: ")
 
-    has_image = input("Do you want to submit an image? Please type 'Yes' or 'No':")
+    has_image = input("Do you want to submit an image? Please type 'Yes' or 'No': ")
     has_image = has_image.lower()
 
     image_input = None
     if has_image == "yes":
-        image_input = input("Add an image link here:")
+        image_input = input("Add an image link here: ")
         image_input = requests.get(image_input)
 
     pet_information_list=[]

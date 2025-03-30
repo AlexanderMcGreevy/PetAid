@@ -1,5 +1,5 @@
 from petAidGemini import gemini_call
-from GooglePlace import get_places_data
+from GooglePlace import get_places_data, find_pet_clinics
 from responseToJSON import json_converter
 from flask import Flask, request, jsonify
 import json
@@ -43,19 +43,25 @@ def post_data():
 def google_places():
     data = request.get_json()
     location = data.get('location', '')
-    radius = data.get('radius', 1000)  # Default radius in meters
-    
+    radius = data.get('radius', 1000)
 
-    # Call the function from googleplace.py
-    places_data = get_places_data(location, radius)
+    if not location:
+        location = "New York, NY"  # fallback for testing
 
-    # Save the response to a JSON file
+    # Use the smart version
+    clinics_df = find_pet_clinics(location, radius)
+
+    # Convert dataframe to list of dictionaries
+    clinics = clinics_df.to_dict(orient='records')
+
+    # Optional: Save to JSON file
     try:
         with open('./google_places_response.json', 'w') as f:
-            json.dump(places_data, f)
+            json.dump(clinics, f, indent=2)
     except IOError as e:
         return jsonify({"error": f"Failed to write JSON file: {e}"}), 500
-    return jsonify(places_data)
+
+    return jsonify(clinics)
 
 @app.route('/find-pet-clinics', methods=['POST'])
 def find_pet_clinics():

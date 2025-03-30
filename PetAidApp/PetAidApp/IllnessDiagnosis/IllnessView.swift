@@ -100,12 +100,15 @@ struct IllnessView: View {
                     .foregroundColor(.red)
             }
             }.toolbar {
-                ToolbarItem() {
-                    Button("Done") {
-                        isFocused = false
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if isFocused {
+                        Button("Done") {
+                            isFocused = false
+                        }
                     }
                 }
             }
+        
 
     }
     

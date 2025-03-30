@@ -8,12 +8,7 @@
 import SwiftUI
 
 struct ClinicView: View {
-    // Dummy data for testing, replace with actual JSON loading later
-    @State private var clinics: [Clinic] = [
-        Clinic(name: "Happy Paws Vet", rating: 4.7, reviewCount: 120, distance: 2.5, phone: "555-234-1234", address: "123 Pet St", googleLink: "https://maps.google.com"),
-        Clinic(name: "Animal Health Center", rating: 4.5, reviewCount: 80, distance: 1.2, phone: "555-343-5678", address: "456 Animal Rd", googleLink: "https://maps.google.com"),
-        Clinic(name: "Best Friends Clinic", rating: 4.9, reviewCount: 200, distance: 3.0, phone: "555--234-9012", address: "789 Vet Ln", googleLink: "https://maps.google.com")
-    ]
+    @State private var clinics: [Clinic] = []
     
     enum SortOption: String, CaseIterable {
         case rating = "Rating"
@@ -22,7 +17,7 @@ struct ClinicView: View {
     }
     
     @State private var selectedSort: SortOption = .rating
-    
+
     var sortedClinics: [Clinic] {
         switch selectedSort {
         case .rating:
@@ -40,7 +35,6 @@ struct ClinicView: View {
                 Color.teal.ignoresSafeArea()
                 
                 VStack {
-                    // Sort Picker
                     Picker("Sort By", selection: $selectedSort) {
                         ForEach(SortOption.allCases, id: \.self) { option in
                             Text(option.rawValue)
@@ -49,7 +43,6 @@ struct ClinicView: View {
                     .pickerStyle(SegmentedPickerStyle())
                     .padding()
                     
-                    // Clinic List
                     ScrollView {
                         LazyVStack(spacing: 20) {
                             ForEach(sortedClinics) { clinic in
@@ -80,7 +73,36 @@ struct ClinicView: View {
                 }
             }
             .navigationTitle("Nearby Clinics")
+            .onAppear(perform: fetchClinics)
         }
+    }
+    
+    func fetchClinics() {
+        guard let url = URL(string: "https://petaidcloud.onrender.com/googleplaces") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // ⚠️ TEMP hardcoded location and radius
+        let payload: [String: Any] = [
+            "location": "40.7128,-74.0060",  // <-- replace later with real location
+            "radius": 5000
+        ]
+        
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: payload) else { return }
+        request.httpBody = jsonData
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data,
+                  let decoded = try? JSONDecoder().decode([Clinic].self, from: data) else {
+                print("Failed to decode or fetch clinics")
+                return
+            }
+            DispatchQueue.main.async {
+                self.clinics = decoded
+            }
+        }.resume()
     }
 }
 

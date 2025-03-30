@@ -61,6 +61,7 @@ def google_places():
     except IOError as e:
         return jsonify({"error": f"Failed to write JSON file: {e}"}), 500
 
+    # ✅ send back the processed data
     return jsonify(clinics)
 
 if __name__ == '__main__':

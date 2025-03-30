@@ -26,15 +26,15 @@ def gemini_call(desc='', image=''):
     # if species=='dog':
     #     pet_information['breed']=breed
 
-    pet_health_question = "My poor dog has been limping the past few days. He won't put his front right leg down when he is walking" #input("Type in your question here: ")
+    # pet_health_question = "My poor dog has been limping the past few days. He won't put his front right leg down when he is walking" #input("Type in your question here: ")
 
-    has_image = "no" #input("Do you want to submit an image? Please type 'Yes' or 'No': ")
-    has_image = has_image.lower()
+    # has_image = "no" #input("Do you want to submit an image? Please type 'Yes' or 'No': ")
+    # has_image = has_image.lower()
 
-    image_input = None
-    if has_image == "yes":
-        image_input = input("Add an image link here: ")
-        image_input = requests.get(image_input)
+    # image_input = None
+    # if has_image == "yes":
+    #     image_input = input("Add an image link here: ")
+    #     image_input = requests.get(image_input)
 
     # pet_information_list=[]
 
@@ -55,10 +55,10 @@ def gemini_call(desc='', image=''):
     Pet Owner Question:\n
     """
 
-    prompt = [prompt_starter + '\n\n' + pet_health_question]
+    prompt = [prompt_starter + '\n\n' + desc]
 
-    if has_image == "yes":
-        prompt += [types.Part.from_bytes(data=image_input.content, mime_type="image/jpeg")]
+    if image is not None:
+        prompt += [image]
 
     response = client.models.generate_content(
         model="gemini-2.0-flash", 

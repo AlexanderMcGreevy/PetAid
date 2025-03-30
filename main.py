@@ -9,11 +9,11 @@ app = Flask('https://petaidcloud.onrender.com/')
 
 @app.route('/diagnose', methods=['POST'])
 def diagnose():
-    # data = request.get_json()
-    # description = data.get('description', '')
-    # image_data = data.get('image', None) 
+    data = request.get_json()
+    description = data.get('description', '')
+    image_data = data.get('image', None) 
 
-    response = gemini_call()
+    response = gemini_call(description, image_data)
     print(response)
 
     out_json = json_converter(response)

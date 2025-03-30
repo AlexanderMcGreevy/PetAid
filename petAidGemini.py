@@ -8,7 +8,7 @@ import requests
 load_dotenv(".env")
 
 def gemini_call(desc='', image=''):
-    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    client = genai.Client(api_key=os.getenv("AIzaSyA10HbWXNvt0BXydlTFlSvi_nhPvyy8VdI"))
     #Only dogs have breeds (so far)
     # species='dog'
     # breed='poodle'

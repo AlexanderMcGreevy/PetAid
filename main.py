@@ -1,5 +1,5 @@
 from petAidGemini import gemini_call
-from GooglePlace import get_places_data, find_pet_clinics
+from GooglePlace import get_places_data, find_pet_clinics, haversine_distance
 from responseToJSON import json_converter
 from flask import Flask, request, jsonify
 import json

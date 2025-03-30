@@ -26,9 +26,9 @@ def gemini_call(desc='', image=''):
     # if species=='dog':
     #     pet_information['breed']=breed
 
-    pet_health_question = input("Type in your question here: ")
+    pet_health_question = "My poor dog has been limping the past few days. He won't put his front right leg down when he is walking" #input("Type in your question here: ")
 
-    has_image = input("Do you want to submit an image? Please type 'Yes' or 'No': ")
+    has_image = "no" #input("Do you want to submit an image? Please type 'Yes' or 'No': ")
     has_image = has_image.lower()
 
     image_input = None

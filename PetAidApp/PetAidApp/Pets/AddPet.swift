@@ -10,11 +10,18 @@ import PhotosUI
 
 struct AddPet: View {
     @ObservedObject var viewModel: PetViewModel
-    
+
+    // Optional pet to edit
+    var petToEdit: Pet? = nil
+    var imageToEdit: UIImage? = nil
+
     @State private var petName: String = ""
     @State private var petAge: String = ""
     @State private var petSpecies: String = ""
     @State private var petBreed: String = ""
+    @State private var lastVetVisit: String = ""
+    @State private var pastIllnesses: String = ""
+
     
     @State private var petImage: UIImage? = nil
     @State private var isShowingImagePicker = false
@@ -22,6 +29,22 @@ struct AddPet: View {
     @State private var imagePickerSource: UIImagePickerController.SourceType = .photoLibrary
 
     @Environment(\.presentationMode) var presentationMode
+
+    init(viewModel: PetViewModel, petToEdit: Pet? = nil, imageToEdit: UIImage? = nil) {
+        self.viewModel = viewModel
+        self.petToEdit = petToEdit
+        self.imageToEdit = imageToEdit
+
+        // Pre-fill text fields for editing
+        _petName = State(initialValue: petToEdit?.name ?? "")
+        _petAge = State(initialValue: petToEdit?.age ?? "")
+        _petSpecies = State(initialValue: petToEdit?.species ?? "")
+        _petBreed = State(initialValue: petToEdit?.breed ?? "")
+        _petImage = State(initialValue: imageToEdit)
+        _lastVetVisit = State(initialValue: petToEdit?.lastVetVisit ?? "")
+        _pastIllnesses = State(initialValue: petToEdit?.pastIllnesses ?? "")
+
+    }
 
     var body: some View {
         ZStack {
@@ -77,19 +100,49 @@ struct AddPet: View {
                     }
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-                    
+                    Group {
+                        TextField("Last Vet Visit (Date or Notes)", text: $lastVetVisit)
+                        TextField("Past Illnesses (Optional)", text: $pastIllnesses)
+                    }
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+
+
+                    // ADD or EDIT Button
                     Button(action: {
-                        let newPet = Pet(
-                            name: petName,
-                            age: petAge,
-                            species: petSpecies,
-                            breed: petBreed,
-                            imageFilename: UUID().uuidString + ".jpg"
-                        )
-                        viewModel.addPet(newPet, image: petImage)
+                        if let editingPet = petToEdit {
+                            // update mode
+                            viewModel.updatePet(
+                                oldPet: editingPet,
+                                newPet: Pet(
+                                    name: petName,
+                                    age: petAge,
+                                    species: petSpecies,
+                                    breed: petBreed,
+                                    imageFilename: editingPet.imageFilename,
+                                    lastVetVisit: lastVetVisit,
+                                    pastIllnesses: pastIllnesses
+                                ),
+                                newImage: petImage
+                            )
+
+                        } else {
+                            // add mode
+                            let newPet = Pet(
+                                name: petName,
+                                age: petAge,
+                                species: petSpecies,
+                                breed: petBreed,
+                                imageFilename: petToEdit?.imageFilename ?? UUID().uuidString + ".jpg",
+                                lastVetVisit: lastVetVisit,
+                                pastIllnesses: pastIllnesses
+                            )
+
+                            viewModel.addPet(newPet, image: petImage)
+                        }
                         presentationMode.wrappedValue.dismiss()
                     }) {
-                        Text("Add Pet")
+                        Text(petToEdit == nil ? "Add Pet" : "Save Changes")
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding()
@@ -102,7 +155,7 @@ struct AddPet: View {
                 .padding()
             }
         }
-        .navigationBarTitle("Add Pet", displayMode: .inline)
+        .navigationBarTitle(petToEdit == nil ? "Add Pet" : "Edit Pet", displayMode: .inline)
     }
 }
 

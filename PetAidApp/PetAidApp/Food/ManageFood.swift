@@ -15,7 +15,7 @@ struct ManageFood: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.teal.ignoresSafeArea()
+                Color.teal.ignoresSafeArea().allowsHitTesting(false)
                 VStack(spacing: 20) {
                     Text("Manage Pet Foods")
                         .font(.largeTitle)
@@ -55,7 +55,9 @@ struct ManageFood: View {
                                 }
                             }
                         }
+                        .onDelete(perform: deleteFood)
                     }
+
                     .listStyle(.plain)
 
                     Text("🐾 Pets are fed automatically every day at 8:00 PM.")
@@ -87,6 +89,11 @@ struct ManageFood: View {
             }
         }
     }
+    func deleteFood(at offsets: IndexSet) {
+        foodVM.foods.remove(atOffsets: offsets)
+        foodVM.saveFoods()
+    }
+
 
 }
 

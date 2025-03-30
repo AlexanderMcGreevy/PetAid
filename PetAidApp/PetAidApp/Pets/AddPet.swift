@@ -100,12 +100,14 @@ struct AddPet: View {
                     }
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
+                    .preferredColorScheme(.light)
                     Group {
                         TextField("Last Vet Visit (Date or Notes)", text: $lastVetVisit)
                         TextField("Past Illnesses (Optional)", text: $pastIllnesses)
                     }
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
+                    .preferredColorScheme(.light)
 
 
                     // ADD or EDIT Button

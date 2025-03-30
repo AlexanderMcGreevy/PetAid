@@ -44,6 +44,7 @@ struct PetView: View {
                 }
             }
             .navigationTitle("Your Pets")
+            .preferredColorScheme(.dark)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: AddPet(viewModel: viewModel)) {

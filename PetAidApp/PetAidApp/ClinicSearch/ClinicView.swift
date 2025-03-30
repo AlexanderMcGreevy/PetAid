@@ -52,10 +52,25 @@ struct ClinicView: View {
                         }
                         .padding()
                     }
+                    
                 }
             }
-            .navigationTitle("Nearby Clinics")
+            .preferredColorScheme(.light)
+            .navigationBarTitle("Nearby Clinics")
+            .toolbarBackground(Color.teal, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            
+
             .onAppear {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.systemTeal // match your teal background
+                appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+                appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+                UINavigationBar.appearance().standardAppearance = appearance
+                UINavigationBar.appearance().scrollEdgeAppearance = appearance
+
                 if let location = locationManager.location {
                     fetchClinics(for: location)
                 }

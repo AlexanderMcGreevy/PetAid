@@ -23,6 +23,10 @@ struct AssignFoodView: View {
                     .font(.largeTitle)
                     .padding()
                     .foregroundColor(.white)
+                Text("🐾 Click Back when finished")
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                    .padding(.bottom)
                 List {
                     ForEach(petVM.pets) { pet in
                         LazyVStack(alignment: .leading) {
@@ -49,7 +53,9 @@ struct AssignFoodView: View {
                 .cornerRadius(8)
             }
             .padding()
+            
         }
+        
     }
 
     func assignPets() {

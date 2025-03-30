@@ -44,6 +44,8 @@ struct IllnessView: View {
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 1))
                         .padding()
                         .focused($isFocused)
+                        .colorScheme(.light)
+                    
                         
 
                     

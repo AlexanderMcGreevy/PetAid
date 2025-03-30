@@ -10,7 +10,7 @@ struct ClinicCard: View {
     let clinic: Clinic
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        LazyVStack(alignment: .leading, spacing: 8) {
             Text(clinic.name)
                 .font(.headline)
                 .foregroundColor(.black)
@@ -22,6 +22,7 @@ struct ClinicCard: View {
             }
             .font(.subheadline)
             .foregroundColor(.black)
+            .preferredColorScheme(.light)
 
             Text("Phone: \(clinic.phone ?? "N/A")")
                 .font(.footnote)
@@ -34,7 +35,7 @@ struct ClinicCard: View {
             Link("View on Google Maps", destination: URL(string: clinic.googleLink ?? "https://maps.google.com")!)
                 .font(.footnote)
                 .foregroundColor(.blue)
-        }
+        }.preferredColorScheme(.light)
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 15)

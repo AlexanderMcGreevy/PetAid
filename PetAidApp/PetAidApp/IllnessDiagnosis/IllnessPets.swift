@@ -11,7 +11,7 @@ struct IllnessPets: View {
     @StateObject var viewModel = PetViewModel()
 
     var body: some View {
-        NavigationStack { // use NavigationStack for iOS 16+
+        NavigationStack {
             ZStack {
                 Color.teal.ignoresSafeArea()
 
@@ -46,7 +46,7 @@ struct IllnessPets: View {
                     .padding()
                 }
             }
-            .navigationTitle("Choose Pet for Diagnosis")
+            .navigationTitle("Diagnose Pet").preferredColorScheme(.dark)
         }
     }
 }

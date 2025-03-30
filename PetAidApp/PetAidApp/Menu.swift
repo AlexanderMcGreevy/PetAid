@@ -28,6 +28,7 @@ struct Menu: View {
                             }
                         }
                         .scaleEffect(scale).padding(.top, 20)
+                        .padding(.top, 20)
                     
                     LazyVStack {
                         NavigationLink(destination: PetView()) {

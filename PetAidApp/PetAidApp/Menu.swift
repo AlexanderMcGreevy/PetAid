@@ -83,7 +83,15 @@ struct Menu: View {
             }
             .edgesIgnoringSafeArea(.all).onAppear {
                 foodVM.autoFeedIfNeeded()
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                    if granted {
+                        print("✅ Notifications permission granted")
+                    } else {
+                        print("❌ Notifications permission denied")
+                    }
+                }
             }
+
 
         }
     }

@@ -30,7 +30,6 @@ struct ManageFood: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                     .padding()
-                    
 
                     Button("Add Food") {
                         guard !newFoodName.isEmpty, let servings = Int(totalServings) else { return }
@@ -42,8 +41,9 @@ struct ManageFood: View {
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(8)
-                    
+
                     Divider().frame(width: UIScreen.main.bounds.width).frame(height: 1).background(Color.white).opacity(0.5)
+
                     List {
                         ForEach(foodVM.foods) { food in
                             NavigationLink(destination: AssignFoodView(foodVM: foodVM, petVM: PetViewModel(), food: food)) {
@@ -58,20 +58,36 @@ struct ManageFood: View {
                     }
                     .listStyle(.plain)
 
-                    Button("Feed Pets") {
-                        foodVM.feedPets()
-                    }
-                    .padding()
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                    Text("🐾 Pets are fed automatically every day at 8:00 PM.")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                        .padding(.top)
                 }
                 .padding()
             }
-            
-        }.environmentObject(foodVM)
-
+        }
+        .environmentObject(foodVM)
     }
+    func scheduleFoodNotification(for food: Food, daysLeft: Int) {
+        let content = UNMutableNotificationContent()
+        content.title = "PetAid Reminder"
+        content.body = "You have only \(daysLeft) day\(daysLeft == 1 ? "" : "s") of \(food.name) left!"
+        content.sound = .default
+
+        // Schedule immediately (you may later refine this to only schedule once per event)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) // <-- test with 5s first
+
+        let request = UNNotificationRequest(identifier: "\(food.id)-\(daysLeft)", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("❌ Notification error: \(error.localizedDescription)")
+            } else {
+                print("✅ Notification scheduled for \(daysLeft) days left")
+            }
+        }
+    }
+
 }
 
 #Preview {

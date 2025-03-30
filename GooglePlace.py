@@ -4,6 +4,7 @@ import json
 import pandas as pd
 from datetime import datetime
 import requests
+from math import radians, sin, cos, sqrt, atan2
 
 def get_places_data(location, radius):
     api_key = 'AIzaSyAgMO9Nlm8TcaHo5kHx2kRmbt03-8hpfAE'
@@ -71,11 +72,13 @@ def find_pet_clinics(location, radius=5000):
             'address': place_details.get('formatted_address', 'N/A'),
             'phone': place_details.get('formatted_phone_number', 'N/A'),
             'rating': place_details.get('rating', 'N/A'),
+            'review_count': place.get('user_ratings_total', 0),  # <- Add this line
             'website': place_details.get('website', 'N/A'),
             'hours': hours,
             'latitude': place_details['geometry']['location']['lat'],
             'longitude': place_details['geometry']['location']['lng'],
         }
+
         clinics.append(clinic_info)
     
     # Create DataFrame
@@ -121,6 +124,17 @@ def export_to_json(data, filename='pet_clinics.json'):
         json.dump(data, f, indent=2)
 
     print(f"Data export to {filename}")
+
+def haversine_distance(lat1, lon1, lat2, lon2):
+    R = 6371.0  # Earth's radius in kilometers
+
+    dlat = radians(lat2 - lat1)
+    dlon = radians(lon2 - lon1)
+
+    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    return R * c  # Distance in kilometers
 
 # Example usage
 if __name__ == "__main__":

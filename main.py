@@ -6,21 +6,27 @@ import json
 
 app = Flask(__name__)
 
-def format_clinic_keys(clinic):
+def format_clinic_keys(clinic, user_lat=None, user_lng=None):
     def safe_float(value):
         try:
             return float(value)
         except:
             return 0.0
 
+    # Compute distance if user location is provided
+    distance = (
+        haversine_distance(user_lat, user_lng, clinic.get("latitude", 0), clinic.get("longitude", 0))
+        if user_lat is not None and user_lng is not None else 0.0
+    )
+
     return {
         "name": clinic.get("name", ""),
         "rating": safe_float(clinic.get("rating", 0)),
-        "reviewCount": 0,  # you can hardcode 0 for now if you don't have reviews
-        "distance": 0.0,   # later you'll compute it
+        "reviewCount": clinic.get("review_count", 0),
+        "distance": distance,
         "phone": clinic.get("phone", ""),
         "address": clinic.get("address", ""),
-        "googleLink": clinic.get("website", "")  # you actually have `website` not `google_link`
+        "googleLink": clinic.get("website", "")
     }
 
 
@@ -69,9 +75,15 @@ def google_places():
     clinics_df = find_pet_clinics(location, radius)
     clinics_raw = clinics_df.to_dict(orient='records')
 
-    # 👇 Apply the key formatter
-    clinics = [format_clinic_keys(c) for c in clinics_raw]
-    
+    # Get user's lat/lng for distance calculation
+    if isinstance(location, str) and "," in location:
+        user_lat, user_lng = map(float, location.split(","))
+    else:
+        geo = gmaps.geocode(location)[0]['geometry']['location']
+        user_lat, user_lng = geo['lat'], geo['lng']
+
+    clinics = [format_clinic_keys(c, user_lat, user_lng) for c in clinics_raw]
+
     print("Clinics JSON response:", json.dumps(clinics, indent=2))
 
     try:
@@ -79,8 +91,9 @@ def google_places():
             json.dump(clinics, f, indent=2)
     except IOError as e:
         return jsonify({"error": f"Failed to write JSON file: {e}"}), 500
-    
+
     return jsonify(clinics)
+
 
 
 

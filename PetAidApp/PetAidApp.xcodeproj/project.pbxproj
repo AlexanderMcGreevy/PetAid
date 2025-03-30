@@ -29,9 +29,22 @@
 		333701412D987AF000654DB4 /* PetAidAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PetAidAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		33B22F062D9931A500E62158 /* Exceptions for "PetAidApp" folder in "PetAidApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 333701262D987AEE00654DB4 /* PetAidApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		333701292D987AEE00654DB4 /* PetAidApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				33B22F062D9931A500E62158 /* Exceptions for "PetAidApp" folder in "PetAidApp" target */,
+			);
 			path = PetAidApp;
 			sourceTree = "<group>";
 		};
@@ -401,7 +414,10 @@
 				DEVELOPMENT_TEAM = Z87CXCTTK6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PetAidApp/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to let you take a photo of your pet";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "PetAid needs your location to find nearby clinics even when in background";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PetAid needs your location to find nearby clinics.\nPetAid needs your location to find nearby clinics";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need library access to let you add a photo of your pet";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -432,7 +448,10 @@
 				DEVELOPMENT_TEAM = Z87CXCTTK6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PetAidApp/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to let you take a photo of your pet";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "PetAid needs your location to find nearby clinics even when in background";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PetAid needs your location to find nearby clinics.\nPetAid needs your location to find nearby clinics";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need library access to let you add a photo of your pet";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

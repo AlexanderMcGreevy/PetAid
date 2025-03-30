@@ -69,5 +69,15 @@ class PetViewModel: ObservableObject {
             try? FileManager.default.removeItem(at: imageURL)
         }
     }
+    
+    func updatePet(oldPet: Pet, newPet: Pet, newImage: UIImage?) {
+        // Remove the old pet first
+        deletePet(oldPet)
+        
+        // Add the updated pet
+        addPet(newPet, image: newImage)
+    }
+
+
 
 }

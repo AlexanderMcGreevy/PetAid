@@ -1,13 +1,30 @@
 from petAidGemini import gemini_call
 from responseToJSON import json_converter
 import json
+from flask import Flask, request, jsonify
+import base64
+import os
 
-response = gemini_call()
-print(response)
-out_json = json_converter(response)
+app = Flask('https://petaidcloud.onrender.com/')
 
-with open('./response.json', 'w') as f:
-    json.dump(out_json, f)
+@app.route('/diagnose', methods=['POST'])
+def diagnose():
+    # data = request.get_json()
+    # description = data.get('description', '')
+    # image_data = data.get('image', None) 
+
+    response = gemini_call()
+    print(response)
+
+    out_json = json_converter(response)
+
+    with open('./response.json', 'w') as f:
+        json.dump(out_json, f)
+    
+    return out_json
+
+
+diagnose()
     
 # Installation
 import googlemaps

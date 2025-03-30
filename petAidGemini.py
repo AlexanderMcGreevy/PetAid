@@ -65,6 +65,9 @@ def gemini_call(desc='', image='', extra_info=[]):
 
     prompt = [prompt]
 
+
+
+
     if image is not None:
         prompt += [image]
 

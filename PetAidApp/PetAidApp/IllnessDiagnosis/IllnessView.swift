@@ -15,6 +15,7 @@ struct IllnessView: View {
     @State private var diagnosis: String? = nil // response
     @State private var isLoading: Bool = false
     @State private var errorMessage: String? = nil
+    let pet: Pet
 
     
     var body: some View {
@@ -98,7 +99,16 @@ struct IllnessView: View {
         isLoading = true
         
         // Create JSON Payload
-        var payload: [String: Any] = ["description": description]
+        var payload: [String: Any] = [
+            "description": description,
+            "lastVetVisit": pet.lastVetVisit,
+            "pastIllnesses": pet.pastIllnesses,
+            "name": pet.name,
+            "age": pet.age,
+            "species": pet.species,
+            "breed": pet.breed
+        ]
+
         
         if let image = selectedImage {
             let resized = resizeImage(image: image, targetWidth: 640)
@@ -118,7 +128,8 @@ struct IllnessView: View {
         }
         
         // Create URL Request
-        guard let url = URL(string: "https://petaidcloud.onrender.com/diagnose") else { return }
+        guard let url = URL(string: "https://petaidcloud.onrender.com/post-data") else { return }
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -152,7 +163,12 @@ struct IllnessView: View {
                 }
             } else {
                 DispatchQueue.main.async {
-                    errorMessage = "Could not decode response."
+                    if let dataString = String(data: data, encoding: .utf8) {
+                        errorMessage = "Unexpected response: \(dataString)"
+                    } else {
+                        errorMessage = "Could not decode response."
+                    }
+
                 }
             }
         }.resume()
@@ -172,7 +188,16 @@ struct IllnessView: View {
 
 }
 
-
 #Preview {
-    IllnessView()
+    IllnessView(
+        pet: Pet(
+            name: "Buddy",
+            age: "3",
+            species: "Dog",
+            breed: "Golden Retriever",
+            imageFilename: "",
+            lastVetVisit: "01/01/2025",
+            pastIllnesses: "None"
+        )
+    )
 }

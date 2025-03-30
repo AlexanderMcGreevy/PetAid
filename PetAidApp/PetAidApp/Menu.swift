@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct Menu: View {
     @State private var scale = 0.5
+    @ObservedObject var foodVM = FoodViewModel.shared
+
 
     var body: some View {
         NavigationView {
@@ -38,10 +40,10 @@ struct ContentView: View {
                                 .cornerRadius(10)
                                 .animation(.easeInOut, value: scale)
 
-                        }
+                        }.padding()
                         
-                        NavigationLink(destination: IllnessView()) {
-                            Text("Illness")
+                        NavigationLink(destination: IllnessPets()) {
+                            Text("Identify Illness")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .padding()
@@ -50,7 +52,7 @@ struct ContentView: View {
                                 .cornerRadius(10)
                                 .animation(.easeInOut, value: scale)
 
-                        }
+                        }.padding()
                         
                         
                         NavigationLink(destination: ClinicView()) {
@@ -62,16 +64,31 @@ struct ContentView: View {
                                 .background(Color.blue)
                                 .cornerRadius(10)
                                 .animation(.easeInOut, value: scale)
-                        }
+                        }.padding()
+                        
+                        NavigationLink(destination: ManageFood()) {
+                            Text("Manage Food")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .padding()
+                                .foregroundColor(.white)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                                .animation(.easeInOut, value: scale)
+
+                        }.padding()
                     }
-                    .padding(.bottom, 100)
+                    .padding(.bottom, 150)
                 }
             }
-            .edgesIgnoringSafeArea(.all)
+            .edgesIgnoringSafeArea(.all).onAppear {
+                foodVM.autoFeedIfNeeded()
+            }
+
         }
     }
 }
 
 #Preview {
-    ContentView()
+    Menu()
 }

@@ -64,13 +64,15 @@ def google_places():
 
     # 👇 Apply the key formatter
     clinics = [format_clinic_keys(c) for c in clinics_raw]
+    
+    print("Clinics JSON response:", json.dumps(clinics, indent=2))
 
     try:
         with open('./google_places_response.json', 'w') as f:
             json.dump(clinics, f, indent=2)
     except IOError as e:
         return jsonify({"error": f"Failed to write JSON file: {e}"}), 500
-
+    
     return jsonify(clinics)
 
 

@@ -94,17 +94,24 @@ struct ClinicView: View {
         request.httpBody = jsonData
         
         URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data,
-                  let decoded = try? JSONDecoder().decode([Clinic].self, from: data) else {
-                print("Failed to decode or fetch clinics")
-                
-                
-                return
+            if let error = error {
+                print("Error fetching clinics:", error)
             }
-            DispatchQueue.main.async {
-                self.clinics = decoded
+            
+            if let data = data {
+                print("Raw response:", String(data: data, encoding: .utf8) ?? "Invalid Data")
+                
+                if let decoded = try? JSONDecoder().decode([Clinic].self, from: data) {
+                    DispatchQueue.main.async {
+                        self.clinics = decoded
+                        print("Decoded clinics:", decoded)
+                    }
+                } else {
+                    print("❌ Failed to decode clinics")
+                }
             }
         }.resume()
+
     }
 }
 

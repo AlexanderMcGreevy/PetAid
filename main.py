@@ -56,5 +56,24 @@ def google_places():
     except IOError as e:
         return jsonify({"error": f"Failed to write JSON file: {e}"}), 500
     return jsonify(places_data)
+
+@app.route('/find-pet-clinics', methods=['POST'])
+def find_pet_clinics():
+    data = request.get_json()
+    location = data.get('location', '')  # Latitude and longitude (e.g., "37.7749,-122.4194")
+    radius = data.get('radius', 5000)  # Search radius in meters (default: 5000 meters)
+    keyword = data.get('keyword', 'pet clinic')  # Optional keyword for refining search
+
+    # Call the function from GooglePlace.py
+    places_data = get_places_data(location, radius, place_type='veterinary_care', keyword=keyword)
+
+    # Save the response to a JSON file
+    try:
+        with open('./pet_clinics_response.json', 'w') as f:
+            json.dump(places_data, f)
+    except IOError as e:
+        return jsonify({"error": f"Failed to write JSON file: {e}"}), 500
+
+    return jsonify(places_data)
 if __name__ == '__main__':
     app.run(debug=True)

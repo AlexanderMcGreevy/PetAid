@@ -1,9 +1,6 @@
-#Values in variables are placeholders
 from google import genai
-# from google.genai import types
 from dotenv import load_dotenv
 import os
-# import requests
 
 load_dotenv(".env")
 
